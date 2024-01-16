@@ -78,6 +78,11 @@ namespace MorseCode
 		/// <exception cref="ArgumentException"></exception>
 		public static void CreateSoundFile(string morseRepresentation, string fileName, bool overrideFiles = true)
 		{
+			if (!Directory.Exists("MorseSoundFiles"))
+			{
+				Directory.CreateDirectory("MorseSoundFiles");
+			}
+				
 			fileName = $@"MorseSoundFiles\{fileName}.wav";
 			if (File.Exists(fileName))
 			{
