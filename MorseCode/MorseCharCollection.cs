@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.CompilerServices;
 
 namespace MorseCode
 {
@@ -16,7 +17,7 @@ namespace MorseCode
 
 		public SoundPlayer SoundPlayer => _soundPlayer;
 
-		private readonly MorseChar _blankMorse = new MorseChar(' '," ","n/a"); // to handle blanks
+		private readonly MorseChar _blankMorse = MorseChar.BlankMorseChar(); // to handle blanks
 
 		public MorseChar BlankMorse => _blankMorse;
 
@@ -51,53 +52,34 @@ namespace MorseCode
 
 		public static Dictionary<char, string> MorseCodeRepresentations => _morseCodeRepresentations;
 
-		private string filesDirectory = Environment.CurrentDirectory;
+		//private string filesDirectory = Environment.CurrentDirectory;
 
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCharCollection"/>.
 		/// Each <see cref="MorseChar"/> represent its <see cref="MorseChar.Character"/>,<see cref="MorseChar.MorseRepresentation"/> and holds its <see cref="MorseChar.SoundFile"/>. <br/>
 		/// Holds all characters of the alphabet in morse upon initialization.  <br/>
-		/// <paramref name="soundFilesDirectory"/> must be in the working directory and files must be named after 'character'.wav. E.g 'a'.wav. <br/>
+		/// "MorseSoundFiles" dir will hold all files, each named after 'character'.wav. E.g 'a'.wav. <br/>
 		/// Use this constructor if you want the basic 26 chars of the alphabet
 		/// </summary>
 		/// <param name="soundFile"></param>
 		/// <param name="soundPlayer"></param>
 		/// <exception cref="ArgumentException"></exception>
-		/// <exception cref="FileNotFoundException"></exception>
-		public MorseCharCollection(string soundFilesDirectory)
-		{
+		public MorseCharCollection()
+		{		
 			_soundPlayer = new SoundPlayer();
-			string soundFile;
-			string soundFileLowerCase;
 			char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();		
-		
+			
 			for (int i = 0; i < alphabet.Length; i++)
-			{
-				soundFile = soundFilesDirectory + alphabet[i] + ".wav";
-				soundFileLowerCase = soundFilesDirectory + alphabet[i].ToString().ToLower() + ".wav";				
-				if (!File.Exists(soundFile))
-				{
-					if (!File.Exists(soundFileLowerCase))
-						throw new FileNotFoundException("Error: a file with the name " + soundFileLowerCase  + " or " + soundFile + " doesn't exist or couldn't be found");
-					else
-						this.Add(new MorseChar(alphabet[i], _morseCodeRepresentations[alphabet[i]], soundFileLowerCase));
-				}
-				else if (new FileInfo(soundFile).Extension != ".wav")
-				{
-					throw new ArgumentException("Error: files had wrong extension (must be .wav)");
-				}
-				else
-				{
-					this.Add(alphabet[i], _morseCodeRepresentations[alphabet[i]], soundFile);
-				}
+			{								
+				this.Add(new MorseChar(alphabet[i], _morseCodeRepresentations[alphabet[i]]));
 			}
 			this.Add(_blankMorse);
-		}
+        }
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCharCollection"/>. 
 		/// Each <see cref="MorseChar"/> represent its <see cref="MorseChar.Character"/>,<see cref="MorseChar.MorseRepresentation"/> and holds its <see cref="MorseChar.SoundFile"/>. <br/>
 		/// Holds all <paramref name="morseChars"/>.  <br/>
-		/// Use this constructor if you'd like to add new morse characters that dont exist. E.g. '$' ".....--.".  <br/>
+		/// Use this constructor if you'd like to add new morse characters that dont exist. E.g. '$' ".....--.". or only specific ones <br/>
 		/// All morse characters must be different from eachother. 
 		/// </summary>
 		/// <param name="morseChars"></param>
@@ -148,7 +130,8 @@ namespace MorseCode
 		}
 		/// <summary>
 		/// Adds a new <see cref="MorseChar"/> to the <see cref="MorseCharCollection"/>. 
-		/// A new <see cref="MorseChar"/> must be differently from the others in the <see cref="MorseCharCollection"/>.
+		/// A new <see cref="MorseChar"/> must be different from the others in the <see cref="MorseCharCollection"/>.
+		/// <paramref name="soundFile"/> takes the whole path of the file
 		/// </summary>
 		/// <param name="character"></param>
 		/// <param name="morseRepresentation"></param>
@@ -201,7 +184,7 @@ namespace MorseCode
 				return morseChar;
 			}
 			else
-				throw new MorseCharNotFoundException();
+				throw new MorseCharNotFoundException("Error: there is no morseChar with the char " + character + " in MorseCharCollection yet");
 		}
 
 		/// <summary>
@@ -222,26 +205,24 @@ namespace MorseCode
 		}
 		
 
-		/// <summary>
-		/// Changes the output of future generated SoundFiles to <paramref name="newDirectory"/>.
-		/// </summary>
-		/// <param name="newDirectory"></param>
-		/// <exception cref="DirectoryNotFoundException"></exception>
-		/// <exception cref="ArgumentNullException"></exception>
-		public void ChangeSoundFilesOutputDir(string newDirectory)
-		{
-			if (newDirectory != null)
-			{
-				if (Directory.Exists(newDirectory))
-					filesDirectory = newDirectory;
-				else
-					throw new DirectoryNotFoundException();
-			}
-			else 
-				throw new ArgumentNullException();
-				
-
-		}
+		///// <summary>
+		///// Changes the output of future generated SoundFiles to <paramref name="newDirectory"/>.
+		///// </summary>
+		///// <param name="newDirectory"></param>
+		///// <exception cref="DirectoryNotFoundException"></exception>
+		///// <exception cref="ArgumentNullException"></exception>
+		//public void ChangeSoundFilesOutputDir(string newDirectory)
+		//{
+		//	if (newDirectory != null)
+		//	{
+		//		if (Directory.Exists(newDirectory))
+		//			filesDirectory = newDirectory;
+		//		else
+		//			throw new DirectoryNotFoundException();
+		//	}
+		//	else 
+		//		throw new ArgumentNullException();				
+		//}
 	}
 	
 }

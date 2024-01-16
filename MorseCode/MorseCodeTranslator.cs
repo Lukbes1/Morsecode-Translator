@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
+using System.Runtime.CompilerServices;
 
 namespace MorseCode
 {
@@ -35,16 +36,13 @@ namespace MorseCode
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCodeTranslator"/>. Use this class for all sorts of translations and converts. <br/>
 		/// The <see cref="MorseCharCollection"/> will be used in all methods of <see cref="MorseCodeTranslator"/>.
-		/// Use this constructor if you want to start with the complete alphabet in inside of the <see cref="MorseCharCollection"/>. <br/>
-		/// !WARNING!: This constructor assumes that you have all 26 audio files for the alphabet in the <paramref name="soundFilesDirectory"/>.
+		/// Use this constructor if you want to start with the complete alphabet inside of the <see cref="MorseCharCollection"/>. <br/>		
+		/// Files are stored in the "MorseSoundFiles" dir.
 		/// </summary>
-		/// <param name="soundFilesDirectory"></param>
-		/// <exception cref="DirectoryNotFoundException"></exception>
-		public MorseCodeTranslator(string soundFilesDirectory)
+		public MorseCodeTranslator()
         {
-			if (!Directory.Exists(soundFilesDirectory))
-				throw new DirectoryNotFoundException();
-			_morseCodes = new MorseCharCollection(soundFilesDirectory);
+			_morseCodes = new MorseCharCollection();
+            Console.WriteLine("Initialized MorseCharTranslator and put all files into MorseSoundFiles");
         }
 
 		/// <summary>
@@ -76,7 +74,7 @@ namespace MorseCode
 				else if (mourseAlphabetContainsAllText) //Alphabet lookup
 					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);
 				else
-					throw new MorseCharNotFoundException("Error: cannot convert text into morse-representation because there are characters that have not yet defined a representation");
+					throw new MorseCharNotFoundException("Error: cannot convert text into morse-representation because there are characters that were not defined yet");
 			}
 			return morseRepresentation.ToArray();
 		}
@@ -244,6 +242,11 @@ namespace MorseCode
 			}			
 		}
 
-		
+
+		public static void DecodeMorseToSoundFile(string morseRepresentation, string fileName, bool overrideFiles = true)
+		{
+			MorseChar.CreateSoundFile(morseRepresentation, fileName, overrideFiles);
+		}
+
 	}
 }
