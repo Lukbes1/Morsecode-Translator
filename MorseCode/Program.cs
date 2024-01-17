@@ -13,7 +13,6 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
-			ExampleStringToSoundFile();
 			Console.ReadKey();		
 		}
 

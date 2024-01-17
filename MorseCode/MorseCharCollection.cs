@@ -52,7 +52,6 @@ namespace MorseCode
 
 		public static Dictionary<char, string> MorseCodeRepresentations => _morseCodeRepresentations;
 
-		//private string filesDirectory = Environment.CurrentDirectory;
 
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCharCollection"/>.
@@ -67,11 +66,9 @@ namespace MorseCode
 		public MorseCharCollection()
 		{		
 			_soundPlayer = new SoundPlayer();
-			char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();		
-			
-			for (int i = 0; i < alphabet.Length; i++)
-			{								
-				this.Add(new MorseChar(alphabet[i], _morseCodeRepresentations[alphabet[i]]));
+			foreach (char morseChar in _morseCodeRepresentations.Keys)
+			{
+				this.Add(new MorseChar(morseChar, _morseCodeRepresentations[morseChar]));
 			}
 			this.Add(_blankMorse);
         }
@@ -203,26 +200,6 @@ namespace MorseCode
 			else 
 				throw new MorseCharNotFoundException("Error: there is no morseChar with the morse representation " + morseRepresentation + " in MorseCharCollection yet");			
 		}
-		
-
-		///// <summary>
-		///// Changes the output of future generated SoundFiles to <paramref name="newDirectory"/>.
-		///// </summary>
-		///// <param name="newDirectory"></param>
-		///// <exception cref="DirectoryNotFoundException"></exception>
-		///// <exception cref="ArgumentNullException"></exception>
-		//public void ChangeSoundFilesOutputDir(string newDirectory)
-		//{
-		//	if (newDirectory != null)
-		//	{
-		//		if (Directory.Exists(newDirectory))
-		//			filesDirectory = newDirectory;
-		//		else
-		//			throw new DirectoryNotFoundException();
-		//	}
-		//	else 
-		//		throw new ArgumentNullException();				
-		//}
 	}
 	
 }
