@@ -12,12 +12,54 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
+			Console.ReadKey();		
+		}
 
-			//List<MorseChar> morse = new List<MorseChar>
-			//{
-			//	new MorseChar('S',".-.-",@"C:\Users\lukbe\source\repos\MorseCode\MorseCode\bin\Debug\MorseSoundFiles\Salsa.wav")
-			//};
+
+		private static void ExampleWholeConversion()
+		{
+			List<MorseChar> morse = new List<MorseChar>
+			{
+				new MorseChar('n', "..."),
+				new MorseChar('ä',".--"),
+				new MorseChar('h',".-.-")
+			};
+
+			MorseCharCollection morseChars = new MorseCharCollection(morse);
+			string[] morseRepresentations = morseChars.ConvertToMorseCharRepresentation();
+			for (int i = 0; i < morseRepresentations.Length; i++)
+			{
+				Console.WriteLine(morseRepresentations[i]);
+			}	
+		}
+
+		private static void ExampleAudioPlaying()
+		{
 			MorseCodeTranslator translator = new MorseCodeTranslator(new MorseCharCollection());
+			while (true)
+			{
+				Console.WriteLine("Type in some text: ");
+				string input = Console.ReadLine();
+				try
+				{
+					string[] inputToMorse = translator.ConvertStringToMorse(input);
+					for (int i = 0; i < inputToMorse.Length; i++)
+					{
+						Console.WriteLine(inputToMorse[i]);
+					}
+					translator.PlayMorseFromString(input);
+				}
+				catch (MorseCharNotFoundException ex)
+				{
+					Console.WriteLine("Wrong input: " + ex.Message);
+				}
+			}
+
+		}
+
+		private static void ExampleConversion()
+		{
+			MorseCodeTranslator translator = new MorseCodeTranslator(new MorseCharCollection());		//Basic alphabet morsechars 
 			while (true)
 			{
 				Console.WriteLine("Type in some text: ");
@@ -32,11 +74,13 @@ namespace MorseCode
 				}
 				catch (MorseCharNotFoundException ex)
 				{
-                    Console.WriteLine("Wrong input: " + ex.Message);
-				}			
+					Console.WriteLine("Wrong input: " + ex.Message);
+				}
 			}
-         
-			Console.ReadKey();
+		}
+
+		private static void ExampleNewChars()
+		{
 			List<MorseChar> morse = new List<MorseChar>
 			{
 				new MorseChar('n', "..."),
@@ -46,11 +90,7 @@ namespace MorseCode
 
 			MorseCharCollection morseChars = new MorseCharCollection(morse);
 			MorseCodeTranslator morseTranslator = new MorseCodeTranslator(morseChars);
-			//while (true) 
-			//{
-			//	morseTranslator.PlayMorseFromChar('S');
-			//	Thread.Sleep(1000);
-			//}
+
 
 			string[] morseRepresentations = morseTranslator.ConvertStringToMorse("näh");
 			do
@@ -61,14 +101,7 @@ namespace MorseCode
 				}
 			} while (true == false);
 
-			MorseCodeTranslator.DecodeMorseToSoundFile(".-.-", "Salsa");
-
-
-
-
-			//ToDo methoden documenten, besser documenten, speed zwischen PlayMorse, Alle Converts einbauen, Morse zu Datei umwandeln.
-
+			MorseCodeTranslator.DecodeMorseToSoundFile(".-.-", "Salsa");		//Create soundfile from scratch without use of new MorseChars
 		}
-
 	}
 }
