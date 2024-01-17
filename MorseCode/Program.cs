@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,16 +13,34 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
+			ExampleStringToSoundFile();
 			Console.ReadKey();		
 		}
 
+
+		private static void ExampleStringToSoundFile()
+		{
+			MorseCodeTranslator translator = new MorseCodeTranslator();
+
+			string[] morseRepresentations = translator.ConvertStringToMorse("I love programming");
+			MorseCodeTranslator.EncodeMorseToSoundFile(morseRepresentations, "ILP");
+			
+			SoundPlayer player = new SoundPlayer();
+			player.SoundLocation = @"MorseSoundFiles\ILP.wav";
+			player.Load();
+			while (true)
+			{
+				player.PlaySync();
+				Thread.Sleep(1000);
+			}
+		}
 
 		private static void ExampleWholeConversion()
 		{
 			List<MorseChar> morse = new List<MorseChar>
 			{
 				new MorseChar('n', "..."),
-				new MorseChar('ä',".--"),
+				new MorseChar('+',".--"),
 				new MorseChar('h',".-.-")
 			};
 
@@ -101,7 +120,7 @@ namespace MorseCode
 				}
 			} while (true == false);
 
-			MorseCodeTranslator.DecodeMorseToSoundFile(".-.-", "Salsa");		//Create soundfile from scratch without use of new MorseChars
+			MorseCodeTranslator.EncodeMorseToSoundFile(".-.-", "Salsa");		//Create soundfile from scratch without use of new MorseChars
 		}
 	}
 }

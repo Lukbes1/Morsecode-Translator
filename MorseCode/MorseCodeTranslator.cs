@@ -42,7 +42,6 @@ namespace MorseCode
 		public MorseCodeTranslator()
         {
 			_morseCodes = new MorseCharCollection();
-            Console.WriteLine("Initialized MorseCharTranslator and put all files into MorseSoundFiles");
         }
 
 		/// <summary>
@@ -242,10 +241,30 @@ namespace MorseCode
 			}			
 		}
 
-
-		public static void DecodeMorseToSoundFile(string morseRepresentation, string fileName, bool overrideFiles = true)
+		/// <summary>
+		/// Creates the soundfile for the given <paramref name="morseRepresentation"/>. If the name of the <paramref name="fileName"/> isnt valid then a random id will be inserted. <br/>
+		/// <paramref name="fileName"/> takes just the name of the file and puts it with .wav extension into the MorseSoundFiles dir.
+		/// </summary>
+		/// <param name="morseRepresentation"></param>
+		/// <param name="fileName"></param>
+		/// <param name="overrideFiles"></param>
+		/// <exception cref="ArgumentException"></exception>
+		public static void EncodeMorseToSoundFile(string morseRepresentation, string fileName, bool overrideFiles = true)
 		{
 			MorseChar.CreateSoundFile(morseRepresentation, fileName, overrideFiles);
+		}
+
+		/// <summary>
+		///  Creates the soundfile for the given <paramref name="morseRepresentations"/>. If the name of the <paramref name="fileName"/> isnt valid then a random id will be inserted. <br/>
+		/// <paramref name="fileName"/> takes just the name of the file and puts it with .wav extension into the MorseSoundFiles dir.
+		/// </summary>
+		/// <param name="morseRepresentation"></param>
+		/// <param name="fileName"></param>
+		/// <param name="overrideFiles"></param>
+		/// <exception cref="ArgumentException"></exception>
+		public static void EncodeMorseToSoundFile(string[] morseRepresentations, string fileName, bool overrideFiles = true)
+		{
+			MorseChar.CreateSoundFile(morseRepresentations,fileName,overrideFiles);
 		}
 
 	}
