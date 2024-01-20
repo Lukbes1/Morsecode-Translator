@@ -12,11 +12,14 @@ using System.Runtime.CompilerServices;
 
 namespace MorseCode
 {
-	internal class MorseCodeTranslator
+	/// <summary>
+	/// MorseCodeTranslator combines all functionalities of the MorseChars and helps converting and creating soundfiles from the internal MorseCharCollection
+	/// </summary>
+	public class MorseCodeTranslator
 	{
 		private readonly MorseCharCollection _morseCodes;
 
-        public MorseCharCollection MorseCodes => _morseCodes;
+		public MorseCharCollection MorseCodes => _morseCodes;
 
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCodeTranslator"/>. Use this class for all sorts of translations and converts. <br/>
@@ -26,9 +29,9 @@ namespace MorseCode
 		/// <param name="morseCharCollection"></param>
 		/// <exception cref="ArgumentNullException"></exception>
 		public MorseCodeTranslator(MorseCharCollection morseCharCollection)
-        {
+		{
 			if (morseCharCollection == null)
-				throw new ArgumentNullException();			
+				throw new ArgumentNullException();
 			else
 				this._morseCodes = morseCharCollection;
 		}
@@ -40,9 +43,9 @@ namespace MorseCode
 		/// Files are stored in the "MorseSoundFiles" dir.
 		/// </summary>
 		public MorseCodeTranslator()
-        {
+		{
 			_morseCodes = new MorseCharCollection();
-        }
+		}
 
 		/// <summary>
 		/// Converts the string <paramref name="text"/> into an array of <see cref="string"/> with each morse representation. <br/>
@@ -52,11 +55,12 @@ namespace MorseCode
 		/// Else the method returns blanks too.
 		/// </summary>
 		/// <param name="text"></param>
+		/// <param name="withBlanks"></param>
 		/// <returns></returns>
 		/// <exception cref="MorseCharNotFoundException"></exception>
 		/// 
 		public string[] ConvertStringToMorse(string text, bool withBlanks = true)
-		{ 
+		{
 			char[] allChractersFromText = text.ToCharArray();
 			bool mourseCodeContainsAllText;
 			bool mourseAlphabetContainsAllText;
@@ -78,7 +82,7 @@ namespace MorseCode
 				else if (mourseCodeContainsAllText) //Collection lookup
 					morseRepresentation.Add(_morseCodes.Find(mc => mc.Character.ToString() == allChractersFromText[i].ToString()).MorseRepresentation);
 				else if (mourseAlphabetContainsAllText) //Alphabet lookup				
-					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);		
+					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);
 				else
 					throw new MorseCharNotFoundException("Error: cannot convert text into morse-representation because there are characters that were not defined yet");
 			}
@@ -157,6 +161,7 @@ namespace MorseCode
 		/// Works with blanks. Pauses for <paramref name="delayBetweenCharsInSeconds"/> inbetween chars. <br/>
 		/// </summary>
 		/// <param name="text"></param>
+		/// <param name="delayBetweenCharsInSeconds"></param>
 		/// <exception cref="MorseCharNotFoundException"></exception>
 		public async Task PlayMorseFromStringAsync(string text, TimeSpan delayBetweenCharsInSeconds)
 		{
@@ -179,10 +184,10 @@ namespace MorseCode
 			MorseChar morseCharacter = _morseCodes.Find(morseChar);
 			if (morseCharacter != null)
 			{
-				 await morseCharacter.PlayMorseAsync(_morseCodes.SoundPlayer);
+				await morseCharacter.PlayMorseAsync(_morseCodes.SoundPlayer);
 			}
 			else
-				throw new MorseCharNotFoundException(morseChar + " does not exist yet");				
+				throw new MorseCharNotFoundException(morseChar + " does not exist yet");
 		}
 		/// <summary>
 		/// Plays the soundfile from the <paramref name="morseChar"/> if its contained in the <see cref="MorseCharCollection"/>
@@ -216,7 +221,7 @@ namespace MorseCode
 			{
 				if (!MorseCharCollection.MorseCodeRepresentations.ContainsKey(character))
 					throw new MorseCharNotFoundException("Error: " + character + " does not exist yet");
-				else 
+				else
 					return MorseCharCollection.MorseCodeRepresentations[character];
 			}
 			else
@@ -235,8 +240,8 @@ namespace MorseCode
 			if (morseRepresentation == _morseCodes.BlankMorse.MorseRepresentation)
 				return _morseCodes.BlankMorse.Character;
 			try
-			{			
-				char morseCharacter = _morseCodes.Find(morseRepresentation);	//Incase of fail, alphabet lookup 
+			{
+				char morseCharacter = _morseCodes.Find(morseRepresentation);    //Incase of fail, alphabet lookup 
 				return morseCharacter;
 			}
 			catch (NullReferenceException)
@@ -245,7 +250,7 @@ namespace MorseCode
 					throw new MorseCharNotFoundException("Error: morse representation" + morseRepresentation + " does not exist yet");
 				else
 					return MorseCharCollection.MorseCodeRepresentations.FirstOrDefault(mr => mr.Value == morseRepresentation).Key;
-			}			
+			}
 		}
 
 		/// <summary>
@@ -265,13 +270,13 @@ namespace MorseCode
 		///  Creates the soundfile for the given <paramref name="morseRepresentations"/>. If the name of the <paramref name="fileName"/> isnt valid then a random id will be inserted. <br/>
 		/// <paramref name="fileName"/> takes just the name of the file and puts it with .wav extension into the MorseSoundFiles dir.
 		/// </summary>
-		/// <param name="morseRepresentation"></param>
+		/// <param name="morseRepresentations"></param>
 		/// <param name="fileName"></param>
 		/// <param name="overrideFiles"></param>
 		/// <exception cref="ArgumentException"></exception>
 		public static void EncodeMorseToSoundFile(string[] morseRepresentations, string fileName, bool overrideFiles = true)
 		{
-			MorseChar.CreateSoundFile(morseRepresentations,fileName,overrideFiles);
+			MorseChar.CreateSoundFile(morseRepresentations, fileName, overrideFiles);
 		}
 
 	}

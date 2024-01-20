@@ -11,7 +11,10 @@ using System.Runtime.CompilerServices;
 
 namespace MorseCode
 {
-	internal class MorseCharCollection : List<MorseChar>
+	/// <summary>
+	/// Contains a list of MorseChar aswell as a soundplayer and the alphabet, therefore acts as a wrapper and helper.
+	/// </summary>
+	public class MorseCharCollection : List<MorseChar>
 	{
 		private readonly SoundPlayer _soundPlayer;
 
@@ -21,7 +24,8 @@ namespace MorseCode
 
 		public MorseChar BlankMorse => _blankMorse;
 
-		private static readonly Dictionary<char,string> _morseCodeRepresentations = new Dictionary<char, string>{
+		private static readonly Dictionary<char, string> _morseCodeRepresentations = new Dictionary<char, string>
+		{
 			['a'] = ".-",
 			['b'] = "-...",
 			['c'] = "-.-.",
@@ -60,18 +64,16 @@ namespace MorseCode
 		/// "MorseSoundFiles" dir will hold all files, each named after 'character'.wav. E.g 'a'.wav. <br/>
 		/// Use this constructor if you want the basic 26 chars of the alphabet
 		/// </summary>
-		/// <param name="soundFile"></param>
-		/// <param name="soundPlayer"></param>
 		/// <exception cref="ArgumentException"></exception>
 		public MorseCharCollection()
-		{		
+		{
 			_soundPlayer = new SoundPlayer();
 			foreach (char morseChar in _morseCodeRepresentations.Keys)
 			{
 				this.Add(new MorseChar(morseChar, _morseCodeRepresentations[morseChar]));
 			}
 			this.Add(_blankMorse);
-        }
+		}
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCharCollection"/>. 
 		/// Each <see cref="MorseChar"/> represent its <see cref="MorseChar.Character"/>,<see cref="MorseChar.MorseRepresentation"/> and holds its <see cref="MorseChar.SoundFile"/>. <br/>
@@ -96,7 +98,7 @@ namespace MorseCode
 				else if (new FileInfo(soundFile).Extension != ".wav")
 				{
 					throw new ArgumentException("Error: a file with the name " + soundFile + " had the wrong extension (must be .wav)");
-				}				
+				}
 				this.Add(morseChar);
 			}
 			this.Add(_blankMorse);
@@ -197,9 +199,9 @@ namespace MorseCode
 			{
 				return morseChar.Character;
 			}
-			else 
-				throw new MorseCharNotFoundException("Error: there is no morseChar with the morse representation " + morseRepresentation + " in MorseCharCollection yet");			
+			else
+				throw new MorseCharNotFoundException("Error: there is no morseChar with the morse representation " + morseRepresentation + " in MorseCharCollection yet");
 		}
 	}
-	
+
 }

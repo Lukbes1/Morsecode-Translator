@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace MorseCode
 {
-	internal class MorseChar
+	/// <summary>
+	/// Represents a MorseChar with a character, morseRepesentation and soundfile 
+	/// </summary>
+	public class MorseChar
 	{
 		public char Character { get; private set; }
 		public string MorseRepresentation { get; private set; }
@@ -44,8 +47,8 @@ namespace MorseCode
 				this.MorseRepresentation = morseRepresentation;
 			if (!File.Exists(soundFile))
 				throw new FileNotFoundException("Error: a file with the name " + soundFile + " could not be found");
-			else 
-				this.SoundFile = soundFile;			
+			else
+				this.SoundFile = soundFile;
 		}
 
 		/// <summary>
@@ -55,6 +58,7 @@ namespace MorseCode
 		/// </summary>
 		/// <param name="character"></param>
 		/// <param name="morseRepresentation"></param>
+		/// <param name="overrideFiles"></param>
 		/// <exception cref="ArgumentException"></exception>
 		public MorseChar(char character, string morseRepresentation, bool overrideFiles = true)
 		{
@@ -68,7 +72,7 @@ namespace MorseCode
 			{
 				this.MorseRepresentation = morseRepresentation;
 				CreateSoundFile(overrideFiles);
-			}		
+			}
 		}
 
 		private MorseChar()
@@ -83,23 +87,23 @@ namespace MorseCode
 		/// </summary>
 		/// <exception cref="DirectoryNotFoundException"></exception>
 		private static void InitializeAudioFiles()
-		{			
+		{
 			List<string> directories = new List<string>();
 			audio_dir_path = @"..\..\MorseCodeAudio";
-			
+
 			if (Directory.Exists(audio_dir_path))
 			{
 				beep_short_path = audio_dir_path + @"\Beep_short.wav";
-				beep_long_path  = audio_dir_path + @"\Beep_long.wav";
-				silence_path    = audio_dir_path + @"\Silence.wav";
+				beep_long_path = audio_dir_path + @"\Beep_long.wav";
+				silence_path = audio_dir_path + @"\Silence.wav";
 			}
 			else if (Directory.Exists(@"MorseCodeAudio"))
 			{
 				beep_short_path = @"MorseCodeAudio\Beep_short.wav";
-				beep_long_path  = @"MorseCodeAudio\Beep_long.wav";
-				silence_path    = @"MorseCodeAudio\Silence.wav";
-				
-            }
+				beep_long_path = @"MorseCodeAudio\Beep_long.wav";
+				silence_path = @"MorseCodeAudio\Silence.wav";
+
+			}
 			else
 				throw new DirectoryNotFoundException("Error: there is no directory with the files from MorseCodeAudio");
 		}
@@ -119,7 +123,7 @@ namespace MorseCode
 			{
 				Directory.CreateDirectory("MorseSoundFiles");
 			}
-				
+
 			fileName = $@"MorseSoundFiles\{fileName}.wav";
 			if (File.Exists(fileName))
 			{
@@ -128,22 +132,22 @@ namespace MorseCode
 					File.Delete(fileName);
 				}
 			}
-			
+
 			try
 			{
 				FileStream testfile = File.Create(fileName);     //Check if file can be created
-				testfile.Close(); 
-				File.Delete(fileName);							//Delete if file could be created
+				testfile.Close();
+				File.Delete(fileName);                          //Delete if file could be created
 			}
 			catch (ArgumentException)
-			{				
+			{
 				string newFileName = $@"MorseSoundFiles\{GenerateRandomID(10)}.wav";
 				Console.WriteLine("Error: file with name: " + fileName + " could not be created.\nChanged name to: " + newFileName);
 				fileName = newFileName;
 			}
-			
+
 			List<ISampleProvider> beepsAndSilences = new List<ISampleProvider>();
-		
+
 			foreach (char beep in morseRepresentation)      //e.g. ['a'] = ".-" 1x BeepShort, 1xBeepLong, 2x Silence
 			{
 				if (beep == '.')
@@ -164,7 +168,7 @@ namespace MorseCode
 		/// Creates the soundfile for the given <paramref name="morseRepresentations"/>.If the name of the <paramref name="fileName"/> isnt valid then a random id will be inserted. <br/>
 		/// <paramref name="fileName"/> takes just the name of the file and puts it with .wav extension into the MorseSoundFiles dir.
 		/// </summary>
-		/// <param name="morseRepresentation"></param>
+		/// <param name="morseRepresentations"></param>
 		/// <param name="fileName"></param>
 		/// <param name="overrideFiles"></param>
 		/// <exception cref="ArgumentException"></exception>
@@ -213,13 +217,13 @@ namespace MorseCode
 					{
 						beepsAndSilences.Add(new AudioFileReader(silence_path)); //Two times the silence for distingushable space between words
 						beepsAndSilences.Add(new AudioFileReader(silence_path));
-					}					
+					}
 					else
 						throw new ArgumentException("Error: morseRepresentation must be . or -");
 
 					beepsAndSilences.Add(new AudioFileReader(silence_path));
 				}
-			}	
+			}
 			ConcatenatingSampleProvider morseBeeps = new ConcatenatingSampleProvider(beepsAndSilences);
 
 			WaveFileWriter.CreateWaveFile(fileName, morseBeeps.ToWaveProvider());
@@ -251,7 +255,7 @@ namespace MorseCode
 				Console.WriteLine("Error: file with name: " + SoundFile + " could not be created.\nChanged name to: " + newFileName);
 				SoundFile = newFileName;
 			}
-		
+
 			List<ISampleProvider> beepsAndSilences = new List<ISampleProvider>();
 
 			foreach (char beep in MorseRepresentation)      //e.g. ['a'] = ".-" 1x BeepShort, 1xBeepLong, 2x Silence
@@ -309,7 +313,7 @@ namespace MorseCode
 			{
 				Console.WriteLine("Error: " + ex.Message);
 			}
-		}		
+		}
 
 
 		public static MorseChar BlankMorseChar()
