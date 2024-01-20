@@ -20,24 +20,28 @@ namespace MorseCode
 				new MorseChar('h',".-.-")
 			};
 			MorseCodeTranslator translator = new MorseCodeTranslator(new MorseCharCollection(morse));
-			while (true)
-			{
-				Console.WriteLine("Type in some text: ");
-				string input = Console.ReadLine();
-				try
-				{
-					string[] inputToMorse = translator.ConvertStringToMorse(input);
-					for (int i = 0; i < inputToMorse.Length; i++)
-					{
-						Console.WriteLine(inputToMorse[i]);
-					}
-				}
-				catch (MorseCharNotFoundException ex)
-				{
-					Console.WriteLine("Wrong input: " + ex.Message);
-				}
-			}
-			Console.ReadKey();		
+			MorseCodeTranslator.EncodeMorseToSoundFile(new string[] { "...", "-.-" }, "MyNewWord");
+            Console.WriteLine("Done");
+
+
+            //while (true)
+            //{
+            //	Console.WriteLine("Type in some text: ");
+            //	string input = Console.ReadLine();
+            //	try
+            //	{
+            //		string[] inputToMorse = translator.ConvertStringToMorse(input);
+            //		for (int i = 0; i < inputToMorse.Length; i++)
+            //		{
+            //			Console.WriteLine(inputToMorse[i]);
+            //		}
+            //	}
+            //	catch (MorseCharNotFoundException ex)
+            //	{
+            //		Console.WriteLine("Wrong input: " + ex.Message);
+            //	}
+            //}
+            Console.ReadKey();		
 		}
 
 

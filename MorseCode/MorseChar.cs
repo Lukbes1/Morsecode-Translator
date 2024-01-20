@@ -150,12 +150,17 @@ namespace MorseCode
 
 			foreach (char beep in morseRepresentation)      //e.g. ['a'] = ".-" 1x BeepShort, 1xBeepLong, 2x Silence
 			{
-				if (beep == '.')
-					beepsAndSilences.Add(new AudioFileReader(beep_short_path));
-				else if (beep == '-')
-					beepsAndSilences.Add(new AudioFileReader(beep_long_path));
-				else
-					throw new ArgumentException("Error: morseRepresentation must be . or -");
+				switch (beep)
+				{
+					case '.':
+						beepsAndSilences.Add(new AudioFileReader(beep_short_path));
+						break;
+					case '-':
+						beepsAndSilences.Add(new AudioFileReader(beep_long_path));
+						break;
+					default:
+						throw new ArgumentException("Error: morseRepresentation must be . or -");
+				}
 				beepsAndSilences.Add(new AudioFileReader(silence_path));
 			}
 			ConcatenatingSampleProvider morseBeeps = new ConcatenatingSampleProvider(beepsAndSilences);
@@ -209,20 +214,22 @@ namespace MorseCode
 			{
 				foreach (char beep in morseRepr)      //e.g. ['a'] = ".-" 1x BeepShort, 1xBeepLong, 2x Silence
 				{
-					if (beep == '.')
-						beepsAndSilences.Add(new AudioFileReader(beep_short_path));
-					else if (beep == '-')
-						beepsAndSilences.Add(new AudioFileReader(beep_long_path));
-					else if (beep == ' ')
+					switch (beep)
 					{
-						beepsAndSilences.Add(new AudioFileReader(silence_path)); //Two times the silence for distingushable space between words
-						beepsAndSilences.Add(new AudioFileReader(silence_path));
+						case '.':
+							beepsAndSilences.Add(new AudioFileReader(beep_short_path));
+							break;
+						case '-':
+							beepsAndSilences.Add(new AudioFileReader(beep_long_path));
+							break;
+						default:
+							throw new ArgumentException("Error: morseRepresentation must be . or -");
 					}
-					else
-						throw new ArgumentException("Error: morseRepresentation must be . or -");
 
 					beepsAndSilences.Add(new AudioFileReader(silence_path));
 				}
+				beepsAndSilences.Add(new AudioFileReader(silence_path));
+				beepsAndSilences.Add(new AudioFileReader(silence_path));
 			}
 			ConcatenatingSampleProvider morseBeeps = new ConcatenatingSampleProvider(beepsAndSilences);
 
