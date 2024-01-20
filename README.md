@@ -7,15 +7,16 @@ It makes use of a flexible MorseCharCollection in which you can chose from plent
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
 ## Installation
+Newest version: 1.0.1.1
 To install the library, you can use the NuGet-package market:
 ```console
-dotnet add package MorseCodeTranslator --version 1.0.1
+dotnet add package MorseCodeTranslator --version xxx
 ```
 Or the build in version in Visual Studio:
 ```console
-NuGet\Install-Package MorseCodeTranslator -Version 1.0.1
+NuGet\Install-Package MorseCodeTranslator -Version xxx
 ```
-
+Newest version is listed at the top 
 ## Usage
 Depending on what you want to use you can go different routes. 
 
