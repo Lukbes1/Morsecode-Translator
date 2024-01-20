@@ -6,6 +6,16 @@ This is the first version of version of my MorseCode-Translator containing simpl
 It makes use of a flexible MorseCharCollection in which you can chose from plenty of characters to display.
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
+## Installation
+To install the library, you can use the NuGet-package market:
+```console
+dotnet add package MorseCodeTranslator --version 1.0.1
+```
+Or the build in version in Visual Studio:
+```console
+NuGet\Install-Package MorseCodeTranslator -Version 1.0.1
+```
+
 ## Usage
 Depending on what you want to use you can go different routes. 
 
@@ -29,6 +39,10 @@ MorseCodeTranslator translator = new MorseCodeTranslator(morseCharCollection);
 //use translator and or the collection from here on...
 ```
 Once you've created a collection or a translator, you can now start using their methods for MorseConvertions or SoundFile convertions
+Keep in minde that if you chose to use only a handful of MorseChars, the MorseCodeTranslator wont have access to the specific soundfiles of the alphabet.
+
+However, if there are only e.g. 3 chars inside the MorseCodeTranslator and you use any kind of convertion method, the MorseCodeTranslator refers back to the original MorseRepresentations (See examples).
+
 ### MorseConvertions
 First of all, you can convert the whole MorseCharCollection back into its MorseRepresentations and use it for example like so:
 ```csharp
@@ -61,4 +75,6 @@ while (true)
         Console.WriteLine("Wrong input: " + ex.Message);
     }
 }
+//input: Hello World
+//
 ```

@@ -48,17 +48,24 @@ namespace MorseCode
 		/// Converts the string <paramref name="text"/> into an array of <see cref="string"/> with each morse representation. <br/>
 		/// If any <see cref="char"/> from <paramref name="text"/> is not known in either the <see cref="MorseCharCollection"/> or the alphabet a <see cref="ArgumentException"/> will be thrown. <br/>
 		/// If <paramref name="withBlanks"/> is false a <see cref="string"/> array with only the morse representations will be returned. <br/>
+		/// The method is case sensitive as 'a' has a different definition than 'A'. <br/>
 		/// Else the method returns blanks too.
 		/// </summary>
 		/// <param name="text"></param>
 		/// <returns></returns>
 		/// <exception cref="MorseCharNotFoundException"></exception>
-		/// //to do
-		public string[] ConvertStringToMorse(string text, bool withBlanks = true, bool caseSensitive = false)
+		/// 
+		public string[] ConvertStringToMorse(string text, bool withBlanks = true)
 		{ 
 			char[] allChractersFromText = text.ToCharArray();
-			bool mourseCodeContainsAllText = allChractersFromText.Any(t => _morseCodes.Any(c => c.Character == t)); //Checks if the text can be translated
-			bool mourseAlphabetContainsAllText = allChractersFromText.Any(t => MorseCharCollection.MorseCodeRepresentations.ContainsKey(t));
+			bool mourseCodeContainsAllText;
+			bool mourseAlphabetContainsAllText;
+			mourseCodeContainsAllText = allChractersFromText.All(t => _morseCodes.Any(c => c.Character == t)); //Checks if the text can be translated
+			mourseAlphabetContainsAllText = allChractersFromText
+				.Where(t => !char.IsWhiteSpace(t))
+				.All(t => MorseCharCollection.MorseCodeRepresentations.ContainsKey(t));
+
+
 			List<string> morseRepresentation = new List<string>(allChractersFromText.Length);
 			if (!withBlanks)
 				morseRepresentation = new List<string>(allChractersFromText.Length - text.Split(' ').Count()); //Remove extra 	
@@ -69,9 +76,9 @@ namespace MorseCode
 				else if (allChractersFromText[i] == ' ' && !withBlanks)
 					continue;
 				else if (mourseCodeContainsAllText) //Collection lookup
-					morseRepresentation.Add(_morseCodes.Find(mc => mc.Character.ToString() == allChractersFromText[i].ToString().ToLower()).MorseRepresentation);
-				else if (mourseAlphabetContainsAllText) //Alphabet lookup
-					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);
+					morseRepresentation.Add(_morseCodes.Find(mc => mc.Character.ToString() == allChractersFromText[i].ToString()).MorseRepresentation);
+				else if (mourseAlphabetContainsAllText) //Alphabet lookup				
+					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);		
 				else
 					throw new MorseCharNotFoundException("Error: cannot convert text into morse-representation because there are characters that were not defined yet");
 			}
