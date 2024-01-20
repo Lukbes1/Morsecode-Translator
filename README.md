@@ -4,7 +4,7 @@
 A small morsecode translator written in C# for general morsecode translation for a console app.
 
 ## Description
-This is one the very first versions of my MorseCode-Translator containing simple convertions.
+This is one of the very first versions of my MorseCode-Translator containing simple convertions.
 It makes use of a flexible MorseCharCollection in which you can chose from plenty of characters to display.
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
@@ -110,4 +110,5 @@ More documentation follows later...
 ### Known issues
 - ConvertStringToMorse() and ConvertCharToMorse() dont lookup the alphabet as wished. Maybe implementing a bool flag for disabling/enabling alphabet lookups in general.
 - Some documentations are not correct/missing.
+- Inconsistent use of alphabet lookup/not clear what methods only use the internal MorseCharCollection and what methods also use the alphabet
  
