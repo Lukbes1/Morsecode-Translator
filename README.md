@@ -4,7 +4,7 @@
 A small morsecode translator written in C# for general morsecode translation for a console app.
 
 ## Description
-This is the first version of version of my MorseCode-Translator containing simple convertions.
+This is one the very first versions of my MorseCode-Translator containing simple convertions.
 It makes use of a flexible MorseCharCollection in which you can chose from plenty of characters to display.
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
