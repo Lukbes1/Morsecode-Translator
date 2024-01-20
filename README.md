@@ -8,6 +8,15 @@ This is the first version of version of my MorseCode-Translator containing simpl
 It makes use of a flexible MorseCharCollection in which you can chose from plenty of characters to display.
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
+The library offers:
+- Basic alphabet convertions from text-to-morse/morse-to-text
+- Basic alphabet soundfile creation aswell as output to console
+- Custom morsecharacter convertions from text-to-morse/morse-to-text
+- Custom morsecharacter soundfile creation aswell as output to console
+
+Whats still in my toDo:
++ Morse-soundfile-to-text-conversion (Soundfile -> MorseChar)
+
 ## Installation
 To install the library, you can use the NuGet-package market through visual studio or per NuGet package installer:
 ```console
