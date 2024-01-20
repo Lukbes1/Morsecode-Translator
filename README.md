@@ -86,7 +86,28 @@ while (true)
         Console.WriteLine("Wrong input: " + ex.Message);
     }
 }
-//input: Hello World
-//
+//input: hello world
+/*output: ....
+          .
+          .-..
+          .-..
+          ---
+        
+          .--
+          ---
+          .-.
+          .-..
+          -.. */
 ```
-todo
+If we were to type in hello world with any upper case letters we'd get an expected exception. This is because the methods are all case sensitive, meaning you can have a different morse representation for 'a' and 'A' respectively.
+```csharp
+//input Hello World
+//Wrong input: Error: cannot convert text into morse-representation because there are characters that were not defined yet
+```
+
+More documentation follows later...
+
+### Known issues
+- ConvertStringToMorse() and ConvertCharToMorse() dont lookup the alphabet as wished. Maybe implementing a bool flag for disabling/enabling alphabet lookups in general.
+- Some documentations are not correct/missing.
+ 
