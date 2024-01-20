@@ -17,7 +17,7 @@ Or the build in version in Visual Studio:
 ```console
 NuGet\Install-Package MorseCodeTranslator -Version xxx
 ```
-Newest version is listed here: https://www.nuget.org/packages/MorseCodeTranslator/
+Newest version is listed here: https://www.nuget.org/packages/L.MorseCodeTranslator/
 ## Usage
 Depending on what you want to use you can go different routes. 
 
