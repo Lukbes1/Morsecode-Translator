@@ -1,3 +1,5 @@
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
+
 # MorseCode-Translator
 A small morsecode translator written in C# for general morsecode translation for a console app.
 
@@ -6,9 +8,17 @@ This is the first version of version of my MorseCode-Translator containing simpl
 It makes use of a flexible MorseCharCollection in which you can chose from plenty of characters to display.
 You can either start with the whole alphabet, only a few of them or completely new ones that are not defined yet (e.g dollar sign $).
 
+The library offers:
+- Basic alphabet convertions from text-to-morse/morse-to-text
+- Basic alphabet soundfile creation aswell as output to console
+- Custom morsecharacter convertions from text-to-morse/morse-to-text
+- Custom morsecharacter soundfile creation aswell as output to console
+
+Whats still in my toDo:
++ Morse-soundfile-to-text-conversion (Soundfile -> MorseChar)
+
 ## Installation
-Newest version: 1.0.1.2
-To install the library, you can use the NuGet-package market:
+To install the library, you can use the NuGet-package market through visual studio or per NuGet package installer:
 ```console
 dotnet add package MorseCodeTranslator --version xxx
 ```
@@ -16,7 +26,7 @@ Or the build in version in Visual Studio:
 ```console
 NuGet\Install-Package MorseCodeTranslator -Version xxx
 ```
-Newest version is listed at the top 
+Newest version is listed here: https://www.nuget.org/packages/L.MorseCodeTranslator/
 ## Usage
 Depending on what you want to use you can go different routes. 
 
@@ -79,3 +89,4 @@ while (true)
 //input: Hello World
 //
 ```
+todo
