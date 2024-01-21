@@ -50,16 +50,16 @@ namespace MorseCode
 		/// <summary>
 		/// Converts the string <paramref name="text"/> into an array of <see cref="string"/> with each morse representation. <br/>
 		/// If any <see cref="char"/> from <paramref name="text"/> is not known in either the <see cref="MorseCharCollection"/> or the alphabet a <see cref="ArgumentException"/> will be thrown. <br/>
-		/// If <paramref name="withBlanks"/> is false a <see cref="string"/> array with only the morse representations will be returned. <br/>
+		/// If <paramref name="returnWithBlanks"/> is false a <see cref="string"/> array with only the morse representations will be returned. <br/>
 		/// The method is case sensitive as 'a' has a different definition than 'A'. <br/>
 		/// Else the method returns blanks too.
 		/// </summary>
 		/// <param name="text"></param>
-		/// <param name="withBlanks"></param>
+		/// <param name="returnWithBlanks"></param>
 		/// <returns></returns>
 		/// <exception cref="MorseCharNotFoundException"></exception>
 		/// 
-		public string[] ConvertStringToMorse(string text, bool withBlanks = true)
+		public string[] ConvertStringToMorse(string text, bool returnWithBlanks = true)
 		{
 			char[] allChractersFromText = text.ToCharArray();
 			bool mourseCodeContainsAllText;
@@ -71,13 +71,13 @@ namespace MorseCode
 
 
 			List<string> morseRepresentation = new List<string>(allChractersFromText.Length);
-			if (!withBlanks)
+			if (!returnWithBlanks)
 				morseRepresentation = new List<string>(allChractersFromText.Length - text.Split(' ').Count()); //Remove extra 	
 			for (int i = 0; i < allChractersFromText.Length; i++)
 			{
-				if (allChractersFromText[i] == ' ' && withBlanks)
+				if (allChractersFromText[i] == ' ' && returnWithBlanks)
 					morseRepresentation.Add(" ");//Special case in which a blank space must be left
-				else if (allChractersFromText[i] == ' ' && !withBlanks)
+				else if (allChractersFromText[i] == ' ' && !returnWithBlanks)
 					continue;
 				else if (mourseCodeContainsAllText) //Collection lookup
 					morseRepresentation.Add(_morseCodes.Find(mc => mc.Character.ToString() == allChractersFromText[i].ToString()).MorseRepresentation);
@@ -91,20 +91,22 @@ namespace MorseCode
 
 		/// <summary>
 		/// Converts the array <paramref name="morseRepresentations"/> into readable text and returns it. <br/>
-		/// If <paramref name="withBlanks"/> is set to true, you can pass an array with blanks. <br/>
+		/// If <paramref name="returnWithBlanks"/> is false a <see cref="string"/> with only the morse representations will be returned. <br/>
 		/// Else the method only accepts valid <paramref name="morseRepresentations"/> that are contained in the instance of <see cref="MorseCharCollection"/>.
 		/// </summary>
 		/// <param name="morseRepresentations"></param>
-		/// <param name="withBlanks"></param>
+		/// <param name="returnWithBlanks"></param>
 		/// <returns></returns>
 		/// <exception cref="MorseCharNotFoundException"></exception>
-		public string ConvertMorseToString(string[] morseRepresentations, bool withBlanks = true)
+		public string ConvertMorseToString(string[] morseRepresentations, bool returnWithBlanks = true)
 		{
 			string text = string.Empty;
 			for (int i = 0; i < morseRepresentations.Length; i++)
 			{
-				if (withBlanks && morseRepresentations[i] == " ")
+				if (returnWithBlanks && morseRepresentations[i] == " ")
 					text += " ";
+				else if (!returnWithBlanks && morseRepresentations[i] == " ")
+					continue;
 				else
 					text += _morseCodes.Find(morseRepresentations[i]).ToString();
 			}
@@ -216,16 +218,18 @@ namespace MorseCode
 		{
 			if (character == _morseCodes.BlankMorse.Character)
 				return _morseCodes.BlankMorse.MorseRepresentation;
-			string morseRepresentation = _morseCodes.Find(character).MorseRepresentation;
-			if (morseRepresentation == null)
+			try
+			{
+				string morseRepresentation = _morseCodes.Find(character).MorseRepresentation;
+				return morseRepresentation;
+			}
+			catch (MorseCharNotFoundException)
 			{
 				if (!MorseCharCollection.MorseCodeRepresentations.ContainsKey(character))
 					throw new MorseCharNotFoundException("Error: " + character + " does not exist yet");
 				else
 					return MorseCharCollection.MorseCodeRepresentations[character];
-			}
-			else
-				return morseRepresentation;
+			}		
 		}
 
 		/// <summary>
@@ -244,7 +248,7 @@ namespace MorseCode
 				char morseCharacter = _morseCodes.Find(morseRepresentation);    //Incase of fail, alphabet lookup 
 				return morseCharacter;
 			}
-			catch (NullReferenceException)
+			catch (MorseCharNotFoundException)
 			{
 				if (!MorseCharCollection.MorseCodeRepresentations.ContainsValue(morseRepresentation))
 					throw new MorseCharNotFoundException("Error: morse representation" + morseRepresentation + " does not exist yet");

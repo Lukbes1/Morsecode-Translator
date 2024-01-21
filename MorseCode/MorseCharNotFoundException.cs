@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MorseCode
 {
-	internal class MorseCharNotFoundException : Exception
+	public class MorseCharNotFoundException : Exception
 	{
 		public MorseCharNotFoundException()
 		{

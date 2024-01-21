@@ -13,35 +13,64 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
-			List<MorseChar> morse = new List<MorseChar>
+
+			ExampleEverythingSimple();
+
+
+			Console.ReadKey();		
+		}
+
+		private static void ExampleEverythingSimple()
+		{
+			List<MorseChar> morseList = new List<MorseChar>
 			{
-				new MorseChar('n', "....-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-."),
-				new MorseChar('+',".--"),
+				new MorseChar('n', "..."),
+				new MorseChar('a',".--"),
 				new MorseChar('h',".-.-")
 			};
-			MorseCodeTranslator translator = new MorseCodeTranslator(new MorseCharCollection(morse));
-			MorseCodeTranslator.EncodeMorseToSoundFile(new string[] { "...", "-.-" }, "MyNewWord");
-            Console.WriteLine("Done");
 
+			MorseCharCollection morseCharCollection = new MorseCharCollection(morseList);
+			MorseCodeTranslator translator = new MorseCodeTranslator(morseCharCollection);
 
-            //while (true)
-            //{
-            //	Console.WriteLine("Type in some text: ");
-            //	string input = Console.ReadLine();
-            //	try
-            //	{
-            //		string[] inputToMorse = translator.ConvertStringToMorse(input);
-            //		for (int i = 0; i < inputToMorse.Length; i++)
-            //		{
-            //			Console.WriteLine(inputToMorse[i]);
-            //		}
-            //	}
-            //	catch (MorseCharNotFoundException ex)
-            //	{
-            //		Console.WriteLine("Wrong input: " + ex.Message);
-            //	}
-            //}
-            Console.ReadKey();		
+			//Morse from char
+			char exampleChar = 'a';
+			string morseFromChar = translator.ConvertCharToMorse(exampleChar);
+			Console.WriteLine("morseFromChar " + exampleChar + ": " + morseFromChar);
+			//Char to morse
+			char charFromMorse = translator.ConvertMorseToChar(morseFromChar);
+			Console.WriteLine("CharFromMorse "+ morseFromChar + ": " + charFromMorse);
+
+			Console.ReadKey();
+			//Morse from collection
+			string[] morseFromCollection = morseCharCollection.ConvertToMorseCharRepresentation();
+			Console.WriteLine("Whole morseFromCollection:");
+			int j = 0;
+			foreach (string s in morseFromCollection)
+			{
+				Console.WriteLine(j + ". morse: " + s);
+				j++;
+			}
+			//string from morse
+			string textFromMorse = translator.ConvertMorseToString(morseFromCollection);
+			Console.WriteLine("textFromMorse (fromMorseCharcollection): " + textFromMorse);
+			string[] morseFromString = translator.ConvertStringToMorse(textFromMorse);
+			Console.WriteLine("morseFromText: ");
+			j = 0;
+			foreach (string str in morseFromString)
+			{
+				Console.WriteLine(j + ". morseFromText: " + str);
+				j++;
+			}
+			Console.ReadKey();
+
+			//Sound operations
+			translator.PlayMorseFromChar('a');
+			translator.PlayMorseFromString(textFromMorse);
+
+			//Manual Soundfile creation
+
+			MorseCodeTranslator.EncodeMorseToSoundFile(".-.-.-", "MyNewChar");
+			MorseCodeTranslator.EncodeMorseToSoundFile(new string[] { "-.-.", "..." }, "MyNewWord");
 		}
 
 

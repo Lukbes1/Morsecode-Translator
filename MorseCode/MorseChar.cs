@@ -25,10 +25,6 @@ namespace MorseCode
 		private static string silence_path = string.Empty;
 		private static string audio_dir_path = string.Empty;
 
-		//private const string BEEP_SHORT_PATH = @"MorseCodeAudio\Beep_short.wav";
-		//private const string BEEP_LONG_PATH =  @"MorseCodeAudio\Beep_long.wav";
-		//private const string SILENCE_PATH =    @"MorseCodeAudio\Silence.wav";
-
 		/// <summary>
 		/// Use this constructor if you have the given soundfile already, use other constructor to create a new one automatically <br/>
 		/// <paramref name="soundFile"/> takes the whole path
@@ -131,6 +127,10 @@ namespace MorseCode
 				{
 					File.Delete(fileName);
 				}
+				else
+				{
+					throw new ArgumentException("Error: file with the name " + fileName + " already exists");
+				}
 			}
 
 			try
@@ -192,6 +192,10 @@ namespace MorseCode
 				{
 					File.Delete(fileName);
 				}
+				else
+				{
+					throw new ArgumentException("Error: file with the name " + fileName + " already exists");
+				}
 			}
 
 			try
@@ -247,6 +251,10 @@ namespace MorseCode
 				if (overrideFiles)
 				{
 					File.Delete(SoundFile);
+				}
+				else
+				{
+					throw new ArgumentException("Error: file with the name " + SoundFile + " already exists");
 				}
 			}
 
