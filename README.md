@@ -20,11 +20,11 @@ Whats still in my toDo:
 ## Installation
 To install the library, you can use the NuGet-package market through visual studio or per NuGet package installer:
 ```console
-dotnet add package MorseCodeTranslator --version xxx
+dotnet add package L.MorseCodeTranslator --version xxx
 ```
 Or the build in version in Visual Studio:
 ```console
-NuGet\Install-Package MorseCodeTranslator -Version xxx
+NuGet\Install-Package L.MorseCodeTranslator -Version xxx
 ```
 Newest version is listed here: https://www.nuget.org/packages/L.MorseCodeTranslator/
 ## Usage
