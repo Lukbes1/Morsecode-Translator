@@ -1,5 +1,6 @@
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
 
+![alt text](https://github.com/Lukbes1/Morsecode-Translator/blob/main/MorseIcon.png?raw=true)
 # MorseCode-Translator
 A small morsecode translator written in C# for general morsecode translation for a console app.
 
