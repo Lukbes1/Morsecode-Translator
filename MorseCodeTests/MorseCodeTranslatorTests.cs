@@ -79,6 +79,7 @@ namespace MorseCodeTests
 
 			// Assert
 			CollectionAssert.AreEqual(expectedMorse, actualMorse);
+			
 		}
 
 		[TestMethod]

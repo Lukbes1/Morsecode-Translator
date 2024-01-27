@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,11 +14,20 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
+			MorseCodeTranslator translator = new MorseCodeTranslator();
 
-			ExampleEverythingSimple();
+			//var text = MorseCodeTranslator.DecodeSoundFileToMorse(@"MorseSoundFiles\b.wav");
+			//MorseAudioReader.SampleDifferenceThreasholdFactor = 0.10f;
 
 
-			Console.ReadKey();		
+			//MorseCodeTranslator.EncodeMorseToSoundFile(translator.ConvertStringToMorse("david is crazy",true),"David");
+			//var morse = translator.DecodeSoundFileToText(@"MorseSoundFiles\D.wav");
+			var morse = translator.ConvertStringToMorse("h e l p", false);
+			//translator.PlayMorseFromString(morse);
+
+
+
+            Console.ReadKey();		
 		}
 
 		private static void ExampleEverythingSimple()

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -226,10 +227,15 @@ namespace MorseCode
 						case '-':
 							beepsAndSilences.Add(new AudioFileReader(beep_long_path));
 							break;
+						case ' ':
+							beepsAndSilences.Add(new AudioFileReader(silence_path));
+							beepsAndSilences.Add(new AudioFileReader(silence_path));
+							beepsAndSilences.Add(new AudioFileReader(silence_path));
+							beepsAndSilences.Add(new AudioFileReader(silence_path));
+							break;
 						default:
 							throw new ArgumentException("Error: morseRepresentation must be . or -");
 					}
-
 					beepsAndSilences.Add(new AudioFileReader(silence_path));
 				}
 				beepsAndSilences.Add(new AudioFileReader(silence_path));
@@ -239,6 +245,7 @@ namespace MorseCode
 
 			WaveFileWriter.CreateWaveFile(fileName, morseBeeps.ToWaveProvider());
 		}
+
 		private void CreateSoundFile(bool overrideFiles = true)
 		{
 			if (!Directory.Exists("MorseSoundFiles"))
@@ -275,12 +282,17 @@ namespace MorseCode
 
 			foreach (char beep in MorseRepresentation)      //e.g. ['a'] = ".-" 1x BeepShort, 1xBeepLong, 2x Silence
 			{
-				if (beep == '.')
-					beepsAndSilences.Add(new AudioFileReader(beep_short_path));
-				else if (beep == '-')
-					beepsAndSilences.Add(new AudioFileReader(beep_long_path));
-				else
-					throw new ArgumentException("Error: morseRepresentation must be . or -");
+				switch (beep)
+				{
+					case '.':
+						beepsAndSilences.Add(new AudioFileReader(beep_short_path));
+						break;
+					case '-':
+						beepsAndSilences.Add(new AudioFileReader(beep_long_path));
+						break;
+					default:
+						throw new ArgumentException("Error: morseRepresentation must be . or -");
+				}
 				beepsAndSilences.Add(new AudioFileReader(silence_path));
 			}
 			ConcatenatingSampleProvider morseBeeps = new ConcatenatingSampleProvider(beepsAndSilences);
@@ -306,9 +318,12 @@ namespace MorseCode
 		{
 			try
 			{
-				soundPlayer.SoundLocation = SoundFile;
-				soundPlayer.Load();
-				soundPlayer.PlaySync();
+				if (Character != ' ')
+				{
+					soundPlayer.SoundLocation = SoundFile;
+					soundPlayer.Load();
+					soundPlayer.PlaySync();
+				}			
 			}
 			catch (Exception ex)
 			{
@@ -320,9 +335,13 @@ namespace MorseCode
 		{
 			try
 			{
-				soundPlayer.SoundLocation = SoundFile;
-				soundPlayer.Load();
-				await Task.Run(() => soundPlayer.Play());
+				if (Character != ' ')
+				{
+					soundPlayer.SoundLocation = SoundFile;
+					soundPlayer.LoadAsync();
+					await Task.Run(() => soundPlayer.Play());
+					soundPlayer.Dispose();	
+				}			
 			}
 			catch (Exception ex)
 			{

@@ -9,6 +9,7 @@ using System.Threading;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
 using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace MorseCode
 {
@@ -69,24 +70,30 @@ namespace MorseCode
 				.Where(t => !char.IsWhiteSpace(t))
 				.All(t => MorseCharCollection.MorseCodeRepresentations.ContainsKey(t));
 
-
-			List<string> morseRepresentation = new List<string>(allChractersFromText.Length);
+			string[] AmorseRepresentations = new string[allChractersFromText.Length];
 			if (!returnWithBlanks)
-				morseRepresentation = new List<string>(allChractersFromText.Length - text.Split(' ').Count()); //Remove extra 	
-			for (int i = 0; i < allChractersFromText.Length; i++)
 			{
-				if (allChractersFromText[i] == ' ' && returnWithBlanks)
-					morseRepresentation.Add(" ");//Special case in which a blank space must be left
-				else if (allChractersFromText[i] == ' ' && !returnWithBlanks)
-					continue;
+				AmorseRepresentations = new string[allChractersFromText.Length - text.Where(c => c == ' ').Count()];
+			}
+			int index = 0;
+			foreach (char morseRepr in allChractersFromText) 
+			{
+				if (morseRepr == ' ')
+				{
+					if (returnWithBlanks)
+						AmorseRepresentations[index] = " ";
+					else
+						continue;
+				}
 				else if (mourseCodeContainsAllText) //Collection lookup
-					morseRepresentation.Add(_morseCodes.Find(mc => mc.Character.ToString() == allChractersFromText[i].ToString()).MorseRepresentation);
+					AmorseRepresentations[index] = _morseCodes.Find(mc => mc.Character.ToString() == morseRepr.ToString()).MorseRepresentation;
 				else if (mourseAlphabetContainsAllText) //Alphabet lookup				
-					morseRepresentation.Add(MorseCharCollection.MorseCodeRepresentations[allChractersFromText[i]]);
+					AmorseRepresentations[index] = MorseCharCollection.MorseCodeRepresentations[morseRepr];
 				else
 					throw new MorseCharNotFoundException("Error: cannot convert text into morse-representation because there are characters that were not defined yet");
+				index++; 
 			}
-			return morseRepresentation.ToArray();
+			return AmorseRepresentations;
 		}
 
 		/// <summary>
@@ -281,6 +288,26 @@ namespace MorseCode
 		public static void EncodeMorseToSoundFile(string[] morseRepresentations, string fileName, bool overrideFiles = true)
 		{
 			MorseChar.CreateSoundFile(morseRepresentations, fileName, overrideFiles);
+		}
+
+		/// <summary>
+		/// Decodes the <paramref name="waveFile"/> into the morse representation. Only works with files created from this project or those similiar at the moment.
+		/// </summary>
+		/// <param name="waveFile"></param>
+		/// <returns></returns>
+		public static string[] DecodeSoundFileToMorse(string waveFile)
+		{
+			return MorseAudioReader.DecodeWaveFileToMorse(waveFile);
+		}
+
+		/// <summary>
+		/// Decodes the <paramref name="waveFile"/> into text. Only works with files created from this project or those similiar at the moment.
+		/// </summary>
+		/// <param name="waveFile"></param>
+		/// <returns></returns>
+		public string DecodeSoundFileToText(string waveFile)
+		{
+			return ConvertMorseToString(DecodeSoundFileToMorse(waveFile));
 		}
 
 	}

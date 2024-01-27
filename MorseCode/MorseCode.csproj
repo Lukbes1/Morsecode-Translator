@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MorseAudioReader.cs" />
     <Compile Include="MorseChar.cs" />
     <Compile Include="MorseCharCollection.cs" />
     <Compile Include="MorseCharNotFoundException.cs" />
