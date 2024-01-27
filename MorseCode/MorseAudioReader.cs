@@ -56,7 +56,7 @@ namespace MorseCode
 		/// <param name="waveFile"></param>
 		/// <returns></returns>
 		/// <exception cref="FileNotFoundException"></exception>
-		public static string[] DecodeWaveFileToMorse(string waveFile)
+		public static string[] DecodeWaveFileToMorse(string waveFile, bool returnWithBlanks = true)
 		{
 			if (!File.Exists(waveFile))
 			{
@@ -72,8 +72,11 @@ namespace MorseCode
 				switch (representations[i])
 				{
 					case MorseIdentifier.NewWord:
-						morseRepresentations.Add(" ");
-						currentCharacter += 2;
+						if (returnWithBlanks)
+						{
+							morseRepresentations.Add(" ");
+							currentCharacter += 2;
+						}					
 						break;
 					case MorseIdentifier.NextDotOrDash:
 						break;

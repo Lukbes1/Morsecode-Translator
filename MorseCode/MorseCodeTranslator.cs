@@ -295,9 +295,9 @@ namespace MorseCode
 		/// </summary>
 		/// <param name="waveFile"></param>
 		/// <returns></returns>
-		public static string[] DecodeSoundFileToMorse(string waveFile)
+		public static string[] DecodeSoundFileToMorse(string waveFile, bool returnWithBlanks = true)
 		{
-			return MorseAudioReader.DecodeWaveFileToMorse(waveFile);
+			return MorseAudioReader.DecodeWaveFileToMorse(waveFile,returnWithBlanks);
 		}
 
 		/// <summary>

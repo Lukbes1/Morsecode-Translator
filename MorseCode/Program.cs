@@ -14,22 +14,39 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
-			MorseCodeTranslator translator = new MorseCodeTranslator();
+			//MorseCodeTranslator translator = new MorseCodeTranslator();
 
+			ExampleEncodingDecoding();
 			//var text = MorseCodeTranslator.DecodeSoundFileToMorse(@"MorseSoundFiles\b.wav");
 			//MorseAudioReader.SampleDifferenceThreasholdFactor = 0.10f;
 
 
 			//MorseCodeTranslator.EncodeMorseToSoundFile(translator.ConvertStringToMorse("david is crazy",true),"David");
 			//var morse = translator.DecodeSoundFileToText(@"MorseSoundFiles\D.wav");
-			var morse = translator.ConvertStringToMorse("h e l p", false);
+			//var morse = translator.ConvertStringToMorse("h e l p", false);
 			//translator.PlayMorseFromString(morse);
 
 
 
-            Console.ReadKey();		
+			Console.ReadKey();		
 		}
+		private static void ExampleEncodingDecoding()
+		{
+			MorseCodeTranslator translator = new MorseCodeTranslator();
+			var morseFromString = translator.ConvertStringToMorse("csharp is the best language ever");
 
+
+			MorseCodeTranslator.EncodeMorseToSoundFile(morseFromString, "CSHARP");
+
+			var morseFromSoundFile = MorseCodeTranslator.DecodeSoundFileToMorse(@"MorseSoundFiles\CSHARP.wav");
+			var textFromSoundFile = translator.DecodeSoundFileToText(@"MorseSoundFiles\CSHARP.wav");
+			foreach (var morse in morseFromSoundFile)
+			{
+                Console.WriteLine("MorseFromSoundFile: " + morse);
+            }
+			Console.WriteLine("TextFromConversion: " + translator.ConvertMorseToString(morseFromSoundFile));
+            Console.WriteLine("TextFromSoundFile: "+ textFromSoundFile);
+        }
 		private static void ExampleEverythingSimple()
 		{
 			List<MorseChar> morseList = new List<MorseChar>
@@ -120,7 +137,7 @@ namespace MorseCode
 
 		private static void ExampleAudioPlaying()
 		{
-			MorseCodeTranslator translator = new MorseCodeTranslator(new MorseCharCollection());
+			MorseCodeTranslator translator = new MorseCodeTranslator();
 			while (true)
 			{
 				Console.WriteLine("Type in some text: ");
@@ -132,14 +149,13 @@ namespace MorseCode
 					{
 						Console.WriteLine(inputToMorse[i]);
 					}
-					translator.PlayMorseFromString(input);
+					translator.PlayMorseFromString(input,TimeSpan.FromSeconds(1));
 				}
 				catch (MorseCharNotFoundException ex)
 				{
 					Console.WriteLine("Wrong input: " + ex.Message);
 				}
 			}
-
 		}
 
 		private static void ExampleConversion()
