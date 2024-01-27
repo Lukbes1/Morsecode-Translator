@@ -14,10 +14,8 @@ The library offers:
 - Basic alphabet soundfile creation aswell as output to console
 - Custom morsecharacter convertions from text-to-morse/morse-to-text
 - Custom morsecharacter soundfile creation aswell as output to console
-
-Whats still in my toDo:
-+ Morse-soundfile-to-text-conversion (Soundfile -> MorseChar)
-
+- Morse-soundfile-to-text-conversion as in Soundfile -> MorseChar (Only works with the morse soundfiles created within this project or those similiar)
+  
 ## Installation
 To install the library, you can use the NuGet-package market through visual studio or per NuGet package installer:
 ```console
@@ -52,6 +50,7 @@ MorseCodeTranslator translator = new MorseCodeTranslator(morseCharCollection);
 ```
 Once you've created a collection or a translator, you can now start using their methods for MorseConvertions or SoundFile convertions.
 Keep in mind that if you chose to use only a handful of MorseChars, the MorseCodeTranslator wont have access to the specific soundfiles of the alphabet.
+In any case, the programm will create the soundfiles for each char specified.
 
 However, if there are only e.g. 3 chars inside the MorseCodeTranslator and you use any kind of convertion method, the MorseCodeTranslator refers back to the original MorseRepresentations from the alphabet (See examples).
 
@@ -105,8 +104,95 @@ If we were to type in hello world with any upper case letters we'd get an expect
 //input Hello World
 //Wrong input: Error: cannot convert text into morse-representation because there are characters that were not defined yet
 ```
+There are many more Morse/text-based convertions including MorseToChar, CharToMorse, StringToMorse, MorseToString etc.. 
 
-More documentation follows later...
+### SoundConversions
+There are many incorporated methods that help you realise the sound aspect of morse code within this project.
+First of all, you can play the morse sounds to the console (or most other application) by using the PlayMorse methods.
+
+```csharp
+MorseCodeTranslator translator = new MorseCodeTranslator();
+while (true)
+{
+    Console.WriteLine("Type in some text: ");
+    string input = Console.ReadLine();
+    try
+    {
+        string[] inputToMorse = translator.ConvertStringToMorse(input);
+        for (int i = 0; i < inputToMorse.Length; i++)
+        {
+            Console.WriteLine(inputToMorse[i]);
+        }
+        translator.PlayMorseFromString(input);
+    }
+    catch (MorseCharNotFoundException ex)
+    {
+        Console.WriteLine("Wrong input: " + ex.Message);
+    }
+}
+``` 
+For the PlayMorseFromString version, you can chose to implement a delay between each char.
+```csharp
+translator.PlayMorseFromString(input,TimeSpan.FromSeconds(1));
+```
+
+Moreover, you can use the MorseCodeTranslator's (in some cases static) methods to encode and decode soundfiles.
+Encode and then decode like so:
+
+```csharp
+MorseCodeTranslator translator = new MorseCodeTranslator();
+var morseFromString = translator.ConvertStringToMorse("csharp is the best language ever");
+
+MorseCodeTranslator.EncodeMorseToSoundFile(morseFromString, "CSHARP");
+
+var morseFromSoundFile = MorseCodeTranslator.DecodeSoundFileToMorse(@"MorseSoundFiles\CSHARP.wav");
+var textFromSoundFile = translator.DecodeSoundFileToText(@"MorseSoundFiles\CSHARP.wav");
+foreach (var morse in morseFromSoundFile)
+{
+    Console.WriteLine("MorseFromSoundFile: " + morse);
+}
+Console.WriteLine("TextFromConversion: " + translator.ConvertMorseToString(morseFromSoundFile));
+Console.WriteLine("TextFromSoundFile: "+ textFromSoundFile);
+//Output:
+/*
+MorseFromSoundFile: -.-.
+MorseFromSoundFile: ...
+MorseFromSoundFile: ....
+MorseFromSoundFile: .-
+MorseFromSoundFile: .-.
+MorseFromSoundFile: .--.
+MorseFromSoundFile:
+MorseFromSoundFile: ..
+MorseFromSoundFile: ...
+MorseFromSoundFile:
+MorseFromSoundFile: -
+MorseFromSoundFile: ....
+MorseFromSoundFile: .
+MorseFromSoundFile:
+MorseFromSoundFile: -...
+MorseFromSoundFile: .
+MorseFromSoundFile: ...
+MorseFromSoundFile: -
+MorseFromSoundFile:
+MorseFromSoundFile: .-..
+MorseFromSoundFile: .-
+MorseFromSoundFile: -.
+MorseFromSoundFile: --.
+MorseFromSoundFile: ..-
+MorseFromSoundFile: .-
+MorseFromSoundFile: --.
+MorseFromSoundFile: .
+MorseFromSoundFile:
+MorseFromSoundFile: .
+MorseFromSoundFile: ...-
+MorseFromSoundFile: .
+MorseFromSoundFile: .-.
+TextFromConversion: csharp is the best language ever
+TextFromSoundFile: csharp is the best language ever
+*/
+```
+The reading/decoding algorithm is based upon the assumption that the moments of silence are 0 when normalized as a float sample and that the waveformat is the same as this: 32 bit IEEFloat: 8000Hz 1 channel. Other waveformats won't work.
+If your custom wavfiles match this pattern, but your beeps/silences are longer/shorter than my prefabs (see MorseCodeAudio dir) then try changing the static value sample_difference_threashold_factor around. 
 
 ### Known issues
 - Some documentations are not correct/missing.
@@ -115,3 +201,4 @@ More documentation follows later...
    + [x] MorseCodeTranslator
    + [ ] MorseChar
    + [ ] MorseCharCollection
+   + [ ] MorseAudioReader
