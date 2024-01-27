@@ -69,6 +69,7 @@ for (int i = 0; i < morseRepresentations.Length; i++)
 ```
 Moreover, you can use the translator to for example read a string input and convert it to the MorseCharRepresentations:
 ```csharp
+MorseCodeTranslator translator = new MorseCodeTranslator();
 while (true)
 {
     Console.WriteLine("Type in some text: ");
