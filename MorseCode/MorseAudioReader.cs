@@ -110,8 +110,8 @@ namespace MorseCode
 			int indexSilences = 0;
 			int beepLong = beeps.Max();
 			int beepShort = beeps.Min();
-			int silenceForWord = silences.Max();
 			int silenceShort = silences.Min();
+			int silenceForWord = silenceShort * 10;		
 			int silenceLong = silenceShort * 3;
 			bool hasWord = true;
 			if (IsInRange(silenceForWord,silenceShort, sample_difference_threashold_factor))

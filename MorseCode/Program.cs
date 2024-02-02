@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,26 +15,13 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
-			//MorseCodeTranslator translator = new MorseCodeTranslator();
-
 			ExampleEncodingDecoding();
-			//var text = MorseCodeTranslator.DecodeSoundFileToMorse(@"MorseSoundFiles\b.wav");
-			//MorseAudioReader.SampleDifferenceThreasholdFactor = 0.10f;
-
-
-			//MorseCodeTranslator.EncodeMorseToSoundFile(translator.ConvertStringToMorse("david is crazy",true),"David");
-			//var morse = translator.DecodeSoundFileToText(@"MorseSoundFiles\D.wav");
-			//var morse = translator.ConvertStringToMorse("h e l p", false);
-			//translator.PlayMorseFromString(morse);
-
-
-
-			Console.ReadKey();		
+	
 		}
 		private static void ExampleEncodingDecoding()
 		{
 			MorseCodeTranslator translator = new MorseCodeTranslator();
-			var morseFromString = translator.ConvertStringToMorse("csharp is the best language ever");
+			var morseFromString = translator.ConvertStringToMorse("csharp is t he best language ever");
 
 
 			MorseCodeTranslator.EncodeMorseToSoundFile(morseFromString, "CSHARP");
@@ -46,7 +34,8 @@ namespace MorseCode
             }
 			Console.WriteLine("TextFromConversion: " + translator.ConvertMorseToString(morseFromSoundFile));
             Console.WriteLine("TextFromSoundFile: "+ textFromSoundFile);
-        }
+			Console.ReadKey();
+		}
 		private static void ExampleEverythingSimple()
 		{
 			List<MorseChar> morseList = new List<MorseChar>

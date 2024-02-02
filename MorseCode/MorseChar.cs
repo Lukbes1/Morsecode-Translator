@@ -228,18 +228,19 @@ namespace MorseCode
 							beepsAndSilences.Add(new AudioFileReader(beep_long_path));
 							break;
 						case ' ':
-							beepsAndSilences.Add(new AudioFileReader(silence_path));
-							beepsAndSilences.Add(new AudioFileReader(silence_path));
+							beepsAndSilences.Add(new AudioFileReader(silence_path)); //1x silence = 1x beepShort
+							beepsAndSilences.Add(new AudioFileReader(silence_path)); //4x silence for new word
 							beepsAndSilences.Add(new AudioFileReader(silence_path));
 							beepsAndSilences.Add(new AudioFileReader(silence_path));
 							break;
 						default:
 							throw new ArgumentException("Error: morseRepresentation must be . or -");
 					}
-					beepsAndSilences.Add(new AudioFileReader(silence_path));
-				}
+					beepsAndSilences.Add(new AudioFileReader(silence_path)); //1x silence garanteed after each
+				}				
+				beepsAndSilences.Add(new AudioFileReader(silence_path)); 
 				beepsAndSilences.Add(new AudioFileReader(silence_path));
-				beepsAndSilences.Add(new AudioFileReader(silence_path));
+			
 			}
 			ConcatenatingSampleProvider morseBeeps = new ConcatenatingSampleProvider(beepsAndSilences);
 
