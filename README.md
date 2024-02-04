@@ -1,6 +1,5 @@
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/L.MorseCodeTranslator.svg)]
-(https://www.nuget.org/packages/L.MorseCodeTranslator/)
+![NuGet Downloads](https://img.shields.io/nuget/dt/L.MorseCodeTranslator.svg)
 
 ![alt text](https://github.com/Lukbes1/Morsecode-Translator/blob/main/MorseIcon.png?raw=true)
 # MorseCode-Translator
