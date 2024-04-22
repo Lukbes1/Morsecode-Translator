@@ -1,8 +1,9 @@
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
+![NuGet Downloads](https://img.shields.io/nuget/dt/L.MorseCodeTranslator.svg)
 
 ![alt text](https://github.com/Lukbes1/Morsecode-Translator/blob/main/MorseIcon.png?raw=true)
 # MorseCode-Translator
-A small morsecode translator written in C# for general morsecode translation for a console app.
+A small morsecode translator written in C# for general morsecode translation for the .NET Framework 
 
 ## Description
 This is one of the very first versions of my MorseCode-Translator containing simple convertions.
