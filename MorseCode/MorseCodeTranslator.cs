@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Media;
-using System.IO;
 using System.Threading;
-using NAudio.Wave.SampleProviders;
-using NAudio.Wave;
-using System.Runtime.CompilerServices;
-using System.Collections;
+using System.Threading.Tasks;
 
 namespace MorseCode
 {

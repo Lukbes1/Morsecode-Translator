@@ -39,6 +39,7 @@ namespace MorseCodeTests
 			['y'] = "-.--",
 			['z'] = "--.."
 		*/
+
 		[TestMethod]
 		public void ConvertStringToMorse_WithBlanks_WithValidText_ReturnsMorseWithBlanks()
 		{
@@ -357,6 +358,35 @@ namespace MorseCodeTests
 			//Act and assert
 			Assert.ThrowsException<ArgumentException>(() => MorseCodeTranslator.EncodeMorseToSoundFile(morseRepresentation, fileName, false));
 			File.Delete(fullPath);
+		}
+
+		[TestMethod]
+		public void DecodeSoundFileToMorse_WithValidSoundFile_DecodesToMorse()
+		{
+			//Arrange 
+			string fileName = @"MorseSoundFiles\d.wav";
+			string[] expectedMorseRepresentation_d = new[] { "-.."};
+
+			//Act
+			var actualMorseRepresentation = MorseCodeTranslator.DecodeSoundFileToMorse(fileName);
+
+			//Assert
+			CollectionAssert.AreEqual(expectedMorseRepresentation_d, actualMorseRepresentation);
+		}
+
+		[TestMethod]
+		public void DecodeSoundFileToText_WithValidSoundFile_DecodesToText()
+		{
+			//Arrange 
+			MorseCodeTranslator translator = new MorseCodeTranslator();
+			string fileName = @"MorseSoundFiles\m.wav";
+			string expectedtext_d = "m";
+
+			//Act
+			var actualtext = translator.DecodeSoundFileToText(fileName);
+
+			//Assert
+			Assert.AreEqual(expectedtext_d, actualtext);
 		}
 	}	
 }

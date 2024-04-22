@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Media;
 using System.Runtime.CompilerServices;
 
 namespace MorseCode
@@ -57,6 +53,87 @@ namespace MorseCode
 		public static Dictionary<char, string> MorseCodeRepresentations => _morseCodeRepresentations;
 
 
+		private static string _morseCodeAudioDir = @"..\..\MorseCodeAudio"; 
+
+		/// <summary>
+		/// This is where all of the pre defined beeps and silences are found. Change this property to change the dir in which the files are found. <br/>
+		/// This only changes where the program searches for the files and doesn't automatically move them. <br/>
+		/// Changing the files themselves might break something. 
+		/// </summary>
+		public static string MorseCodeAudioDir
+		{
+			get
+			{
+				return _morseCodeAudioDir;
+			}
+			set
+			{
+				if (value != null && Directory.Exists(value))
+				{
+					_morseCodeAudioDir = value;
+					MorseChar.Beep_long_path = value + @"\Beep_long.wav";
+					MorseChar.Beep_short_path = value + @"\Beep_short.wav";
+					MorseChar.Silence_path = value + @"\Silence.wav";
+				}
+				else
+				{
+					throw new ArgumentException("Error: directory does not exist");
+				}
+			}
+		}
+
+		private static string _morseSoundFilesDir = @"MorseSoundFiles";
+
+		/// <summary>
+		/// This is where all of the created soundfiles (e.g the alphabet) are stored. Change this property to change the dir in which the files are found <br/>
+		/// This only changes where the program searches for the files and doesn't automatically move them. <br/>
+		/// This does however automatically change the internally saved <see cref="MorseChar.SoundFile"/> of each <see cref="MorseChar"/>
+		/// </summary>
+		public static string MorseSoundFilesDir
+		{
+			get
+			{
+				return _morseSoundFilesDir;
+			}
+			set
+			{ 
+				if (value != null && Directory.Exists(value))
+				{
+					MorseSoundFilesDirChanged?.Invoke(null,new DirectoryChangedEventArgs(value));
+					_morseSoundFilesDir = value;
+				}
+				else
+				{
+					throw new ArgumentException("Error: directory does not exist");
+				}
+			}
+		}
+
+		private void ChangeSoundFilesDir(object sender, DirectoryChangedEventArgs e)
+		{
+			foreach (MorseChar morseChar in this)
+			{
+				string olddir = Path.GetDirectoryName(morseChar.SoundFile);
+				morseChar.SoundFile.Replace(olddir, e.Directory);
+			
+				//	string newDir = morseChar.SoundFile;
+				//	morseChar.SoundFile.Replace(e.Directory, olddir);
+				//	throw new ArgumentException("Error: directory for " + olddir + " could not be changed \n New dir:" + newDir);
+				//}
+			}
+		}
+
+		public class DirectoryChangedEventArgs : EventArgs
+		{
+			public string Directory;
+			public DirectoryChangedEventArgs(string directory)
+			{
+				this.Directory = directory;
+			}
+		}
+
+		public static event EventHandler<DirectoryChangedEventArgs> MorseSoundFilesDirChanged;
+
 		/// <summary>
 		/// Creates a new instance of <see cref="MorseCharCollection"/>.
 		/// Each <see cref="MorseChar"/> represent its <see cref="MorseChar.Character"/>,<see cref="MorseChar.MorseRepresentation"/> and holds its <see cref="MorseChar.SoundFile"/>. <br/>
@@ -67,6 +144,7 @@ namespace MorseCode
 		/// <exception cref="ArgumentException"></exception>
 		public MorseCharCollection()
 		{
+			MorseSoundFilesDirChanged += ChangeSoundFilesDir;
 			_soundPlayer = new SoundPlayer();
 			foreach (char morseChar in _morseCodeRepresentations.Keys)
 			{
@@ -86,6 +164,7 @@ namespace MorseCode
 		/// <exception cref="FileNotFoundException"></exception>
 		public MorseCharCollection(IEnumerable<MorseChar> morseChars)
 		{
+			MorseSoundFilesDirChanged += ChangeSoundFilesDir;
 			_soundPlayer = new SoundPlayer();
 			string soundFile;
 			foreach (MorseChar morseChar in morseChars)
@@ -203,5 +282,4 @@ namespace MorseCode
 				throw new MorseCharNotFoundException("Error: there is no morseChar with the morse representation " + morseRepresentation + " in MorseCharCollection yet");
 		}
 	}
-
 }

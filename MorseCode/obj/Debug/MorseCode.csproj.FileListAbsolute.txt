@@ -2,7 +2,6 @@ C:\Users\lukbe\source\repos\MorseCode\MorseCode\bin\Debug\MorseCode.exe.config
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\bin\Debug\MorseCode.exe
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\bin\Debug\MorseCode.pdb
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\obj\Debug\MorseCode.csproj.AssemblyReference.cache
-C:\Users\lukbe\source\repos\MorseCode\MorseCode\obj\Debug\MorseCode.csproj.SuggestedBindingRedirects.cache
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\obj\Debug\MorseCode.csproj.CoreCompileInputs.cache
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\obj\Debug\MorseCode.exe
 C:\Users\lukbe\source\repos\MorseCode\MorseCode\obj\Debug\MorseCode.pdb
