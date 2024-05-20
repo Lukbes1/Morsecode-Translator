@@ -214,4 +214,4 @@ For the MorseCodeAudio, you have to make sure the files are actually located whe
    + [ ] MorseChar
    + [ ] MorseCharCollection (Started)
    + [ ] MorseAudioReader
--Please let me know if you would like any specific changes made or if there are any bugs, thanks to everyone using my package!
+Please let me know if you would like any specific changes made or if there are any bugs, thanks to everyone using my package!
