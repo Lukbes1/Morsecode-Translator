@@ -204,7 +204,7 @@ If you would like to change where the generated files are put, use the MorseChar
 	MorseCharCollection.MorseCodeAudioDir = @"C:\exampleDir\MorseCodeAudio";
 ```
 Whenever you generate files from this point on, the code will look for these two directories.
-Note that files created beforehand will (those located in MorseCodeFiles) will not be moved. However, every MorseChar created before and after setting this property will automatically be located in the new directory.
+Note that files created beforehand (those located in MorseCodeFiles) will not be moved. However, every MorseChar created before and after setting this property will automatically be located in the new directory.
 For the MorseCodeAudio, you have to make sure the files are actually located where you said they would be after changing the property.
 ### Known issues
 - Some documentations are not correct/missing.
