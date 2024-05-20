@@ -196,11 +196,22 @@ TextFromSoundFile: csharp is the best language ever
 The reading/decoding algorithm is based upon the assumption that the moments of silence are 0 when normalized as a float sample and that the waveformat is the same as this: 32 bit IEEFloat: 8000Hz 1 channel. Other waveformats won't work.
 If your custom wavfiles match this pattern, but your beeps/silences are longer/shorter than my prefabs (see MorseCodeAudio dir) then try changing the static value sample_difference_threashold_factor around. 
 
+### Changing the directory of located files
+The default directories for the MorseSoundFiles and MorseCodeAudios are in either the executable directory or two directories behind that. 
+If you would like to change where the generated files are put, use the MorseCharCollection's static property and for the pre defined audios (beep short/long and silence) do the same as follows:
+```csharp
+	MorseCharCollection.MorseSoundFilesDir = @"C:\exampleDir\MorseCodeFiles";
+	MorseCharCollection.MorseCodeAudioDir = @"C:\exampleDir\MorseCodeAudio";
+```
+Whenever you generate files from this point on, the code will look for these two directories.
+Note that files created beforehand will (those located in MorseCodeFiles) will not be moved. However, every MorseChar created before and after setting this property will automatically be located in the new directory.
+For the MorseCodeAudio, you have to make sure the files are actually located where you said they would be after changing the property.
 ### Known issues
 - Some documentations are not correct/missing.
 - Inconsistent use of alphabet lookup/not clear what methods only use the internal MorseCharCollection and what methods also use the alphabet.
 - Unit tests done for:
    + [x] MorseCodeTranslator
    + [ ] MorseChar
-   + [ ] MorseCharCollection
+   + [ ] MorseCharCollection (Started)
    + [ ] MorseAudioReader
+-Please let me know if you would like any specific changes made or if there are any bugs, thanks to everyone using my package!
