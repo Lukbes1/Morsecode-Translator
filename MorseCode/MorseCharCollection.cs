@@ -115,11 +115,6 @@ namespace MorseCode
 			{
 				string olddir = Path.GetDirectoryName(morseChar.SoundFile);
 				morseChar.SoundFile.Replace(olddir, e.Directory);
-			
-				//	string newDir = morseChar.SoundFile;
-				//	morseChar.SoundFile.Replace(e.Directory, olddir);
-				//	throw new ArgumentException("Error: directory for " + olddir + " could not be changed \n New dir:" + newDir);
-				//}
 			}
 		}
 

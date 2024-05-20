@@ -85,25 +85,21 @@ namespace MorseCode
 		/// <exception cref="DirectoryNotFoundException"></exception>
 		private static void InitializeAudioFiles()
 		{
-			string audioPath = @"..\..\MorseCodeAudio";
-			List<string> directories = new List<string>();
-
-			if (Directory.Exists(audioPath))
+			bool pathFound = false;
+			string[] defaultPaths = new string[] { MorseCharCollection.MorseCodeAudioDir, @"..\..\MorseCodeAudio", @"MorseCodeAudio"};
+			foreach (string path in defaultPaths)
 			{
-				MorseCharCollection.MorseCodeAudioDir = audioPath;
-				Beep_short_path = MorseCharCollection.MorseCodeAudioDir + @"\Beep_short.wav";
-				Beep_long_path = MorseCharCollection.MorseCodeAudioDir + @"\Beep_long.wav";
-				Silence_path = MorseCharCollection.MorseCodeAudioDir + @"\Silence.wav";
+				if (Directory.Exists(path))
+				{
+					MorseCharCollection.MorseCodeAudioDir = path;
+					Beep_short_path = MorseCharCollection.MorseCodeAudioDir + @"\Beep_short.wav";
+					Beep_long_path = MorseCharCollection.MorseCodeAudioDir + @"\Beep_long.wav";
+					Silence_path = MorseCharCollection.MorseCodeAudioDir + @"\Silence.wav";
+					pathFound = true;
+					break;
+				}
 			}
-			else if (Directory.Exists(@"MorseCodeAudio"))
-			{
-				MorseCharCollection.MorseCodeAudioDir = @"MorseCodeAudio";
-				Beep_short_path = @"MorseCodeAudio\Beep_short.wav";
-				Beep_long_path = @"MorseCodeAudio\Beep_long.wav";
-				Silence_path = @"MorseCodeAudio\Silence.wav";
-
-			}
-			else
+			if (!pathFound)
 				throw new DirectoryNotFoundException("Error: there is no directory with the files from MorseCodeAudio");
 		}
 		/// <summary>

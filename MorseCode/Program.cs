@@ -15,8 +15,31 @@ namespace MorseCode
 	{
 		static void Main(string[] args)
 		{
-			ExampleEncodingDecoding();
-	
+			ExampleChangingDirectory();
+		}
+
+
+
+		private static void ExampleChangingDirectory()
+		{
+			MorseCharCollection.MorseSoundFilesDir = @"C:\Users\lukbe\OneDrive\Desktop\Amogus\MorseCodeFiles";
+			MorseCharCollection.MorseCodeAudioDir = @"C:\Users\lukbe\OneDrive\Desktop\Amogus\MorseCodeAudio";
+			List<MorseChar> morseList = new List<MorseChar>
+			{
+				new MorseChar('$', "..-.-."),
+			};
+
+
+			MorseCharCollection collection = new MorseCharCollection(morseList);
+            Console.WriteLine(MorseCharCollection.MorseSoundFilesDir);
+			Console.WriteLine(MorseCharCollection.MorseCodeAudioDir);
+            MorseCodeTranslator translator = new MorseCodeTranslator(collection);
+			foreach (var morseRepr in translator.MorseCodes.ConvertToMorseCharRepresentation())
+			{
+				Console.WriteLine(morseRepr);
+			}
+			Console.WriteLine("Finished");
+			Console.ReadKey();
 		}
 		private static void ExampleEncodingDecoding()
 		{
